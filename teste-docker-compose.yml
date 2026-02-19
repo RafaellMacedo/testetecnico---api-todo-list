@@ -1,0 +1,42 @@
+# services:
+#   db:
+#     image: postgres:15
+#     environment:
+#       RAILS_ENV: development
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: password
+#     volumes:
+#       - postgres_data:/var/lib/postgresql/data
+
+#   web:
+#     build: .
+#     command: bash -c "bundle exec rails db:create db:migrate && rails server -b 0.0.0.0"
+#     volumes:
+#       - .:/app
+#       - bundle_data:/usr/local/bundle
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - db
+#     environment:
+#       DATABASE_URL: postgres://postgres:password@db:5432/postgres
+
+# volumes:
+#   postgres_data:
+#   bundle_data:
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      RAILS_ENV: development
+    volumes:
+      - .:/rails
+      - bundle_data:/usr/local/bundle
+    ports:
+      - "3000:3000"
+
+volumes:
+  bundle_data:
